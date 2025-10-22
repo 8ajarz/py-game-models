@@ -26,14 +26,14 @@ def main() -> None:
                 bonus=skill["bonus"],
                 race=players_race
             )
-        try:
+        guild_data = chars.get("guild")
+        players_guild = None
+        if guild_data:
             players_guild, _ = Guild.objects.get_or_create(
-                name=chars["guild"]["name"],
-                description=chars["guild"]["description"]
+                name=guild_data.get("name"),
+                description=guild_data.get("description")
             )
-        except TypeError:
-            players_guild = None
-        Player.objects.get_or_create(
+        Player.objects.update_or_create(
             nickname=entity,
             email=chars["email"],
             bio=chars["bio"],
