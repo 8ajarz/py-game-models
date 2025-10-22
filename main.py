@@ -10,8 +10,10 @@ def main() -> None:
             data = load(file)
     except FileNotFoundError:
         print("Error: 'players.json' not found. Please create the file.")
+        return
     except JSONDecodeError:
         print("Error: Invalid JSON format in 'players.json'.")
+        return
 
     for entity, chars in data.items():
         players_race, _ = Race.objects.get_or_create(
@@ -31,7 +33,7 @@ def main() -> None:
             )
         except TypeError:
             players_guild = None
-        Player.objects.create(
+        Player.objects.get_or_create(
             nickname=entity,
             email=chars["email"],
             bio=chars["bio"],
